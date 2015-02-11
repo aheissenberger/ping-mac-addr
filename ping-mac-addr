@@ -1,0 +1,37 @@
+#!/bin/sh
+
+network=$1
+mac=$2
+count=$3
+invert_status=$4
+
+cacheupdate=/tmp/ping-mac-addr-arp-table
+
+if [ ! -f "$cacheupdate" ] || [ "$(find "$cacheupdate" -mmin +1400)"];
+then
+	echo "nmap scan ${network}..."
+    # sudo nmap -sP ${network} > $cacheupdate
+    # 
+    echo "nmap dummy"  > $cacheupdate
+fi
+#arp -an | grep -i ${mac} | awk '{print $2}' | sed 's/[()]//g'
+ip=`arp -an | grep -i ${mac} | awk '{print $2}' | sed 's/[()]//g'`
+ip='192.168.0.2'
+#echo "IP: $ip"
+if [ -n "$ip" ];
+then
+	ping -q -c $count $ip
+	status=$?
+else
+	status=1
+fi
+if [ -n "$invert_status" ];
+then
+	if [ "$status" = "0" ];
+	then
+		status=1
+	else
+		status=0
+	fi
+fi
+exit $status
