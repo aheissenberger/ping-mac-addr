@@ -10,7 +10,7 @@ cacheupdate=/tmp/ping-mac-addr-arp-table
 if [ ! -f "$cacheupdate" ] || [ "$(find "$cacheupdate" -mmin +1400)"];
 then
 	echo "nmap scan ${network}..."
-    sudo nmap -sP ${network} > $cacheupdate
+    nmap -sP ${network} > $cacheupdate
     # 
     #echo "nmap dummy"  > $cacheupdate
 fi
@@ -19,7 +19,7 @@ ip=`arp -an | grep -i ${mac} | awk '{print $2}' | sed 's/[()]//g'`
 #echo "IP: $ip"
 if [ -n "$ip" ];
 then
-	ping -q -c $count $ip 2>&1 >/dev/null
+	ping -n -q -c $count $ip 2>&1 >/dev/null
 	status=$?
 else
 	status=1
