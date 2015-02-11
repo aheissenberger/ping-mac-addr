@@ -19,7 +19,7 @@ ip=`arp -an | grep -i ${mac} | awk '{print $2}' | sed 's/[()]//g'`
 #echo "IP: $ip"
 if [ -n "$ip" ];
 then
-	ping -q -c $count $ip
+	ping -q -c $count $ip 2>&1 >/dev/null
 	status=$?
 else
 	status=1
