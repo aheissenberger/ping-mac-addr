@@ -21,6 +21,10 @@ if [ -n "$ip" ];
 then
 	ping -n -q -c $count $ip 2>&1 >/dev/null
 	status=$?
+	if [ "$status" != "0" ];
+	then
+		rm -f $cacheupdate
+	fi
 else
 	status=1
 fi
