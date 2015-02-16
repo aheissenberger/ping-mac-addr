@@ -34,4 +34,4 @@ then
 		status=0
 	fi
 fi
-exit $status
+echo $status
